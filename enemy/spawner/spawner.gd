@@ -1,6 +1,7 @@
 extends StaticBody2D
 
 @onready var spawn_timer = $SpawnTimer
+@onready var health_component = $"../HealthComponent"
 
 var _spawn_rate: float = 100.0
 var _health: float = 100.0

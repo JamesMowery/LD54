@@ -1,26 +1,42 @@
-[gd_scene load_steps=4 format=3 uid="uid://s2ov2behe70l"]
+[gd_scene load_steps=6 format=3 uid="uid://s2ov2behe70l"]
 
 [ext_resource type="Texture2D" uid="uid://7kw8lxfv2owb" path="res://icon.svg" id="1_elcep"]
 [ext_resource type="Script" path="res://enemy/spawner/spawner.gd" id="1_mmin0"]
+[ext_resource type="PackedScene" uid="uid://dfhpogj6okv0e" path="res://components/health_bar_component.tscn" id="3_x0b4g"]
+[ext_resource type="PackedScene" uid="uid://o7idubkhnsm0" path="res://components/health_component.tscn" id="4_4rw87"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1g5cf"]
 size = Vector2(38, 38)
 
-[node name="Spawner" type="StaticBody2D" groups=["spawner"]]
+[node name="Spawner" type="Node2D"]
+
+[node name="SpawnerStaticBody" type="StaticBody2D" parent="." groups=["spawner"]]
 collision_layer = 16
 script = ExtResource("1_mmin0")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="SpawnerStaticBody"]
 self_modulate = Color(1, 0, 0, 1)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("1_elcep")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnerStaticBody"]
 shape = SubResource("RectangleShape2D_1g5cf")
 
-[node name="SpawnTimer" type="Timer" parent="."]
+[node name="SpawnTimer" type="Timer" parent="SpawnerStaticBody"]
 wait_time = 5.0
 one_shot = true
 autostart = true
 
-[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="SpawnerStaticBody"]
+remote_path = NodePath("../../HealthBarComponent")
+update_rotation = false
+update_scale = false
+
+[node name="HealthBarComponent" parent="." node_paths=PackedStringArray("health_component", "entity_reference") instance=ExtResource("3_x0b4g")]
+health_component = NodePath("../HealthComponent")
+entity_reference = NodePath("../SpawnerStaticBody")
+y_offset = -100.0
+
+[node name="HealthComponent" parent="." instance=ExtResource("4_4rw87")]
+
+[connection signal="timeout" from="SpawnerStaticBody/SpawnTimer" to="SpawnerStaticBody" method="_on_spawn_timer_timeout"]

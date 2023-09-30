@@ -13,6 +13,7 @@ func get_health() -> float:
 
 func reduce_health(amount: float) -> void:
 	current_health -= amount
+	SignalManager.on_health_update.emit()
 
 func add_health(amount: float) -> void:
 	current_health += amount

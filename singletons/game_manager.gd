@@ -10,3 +10,7 @@ func check_terrain(terrain) -> float:
 		return 1.0
 	
 	return 1.0
+
+func check_game_over(player_health: float) -> void:
+	if player_health <= 0:
+		print_debug("Game Over!!!")

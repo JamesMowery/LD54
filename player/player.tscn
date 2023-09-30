@@ -14,7 +14,7 @@ size = Vector2(32, 112)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kgbxg"]
 size = Vector2(32, 40)
 
-[node name="Player" type="Node2D" groups=["player"]]
+[node name="Player" type="Node2D"]
 
 [node name="PlayerCharacter" type="CharacterBody2D" parent="." groups=["player"]]
 collision_layer = 4
@@ -37,7 +37,7 @@ texture = ExtResource("1_rpf0v")
 position = Vector2(0, 4)
 shape = SubResource("RectangleShape2D_nsmsw")
 
-[node name="HurtBox" type="Area2D" parent="PlayerCharacter"]
+[node name="HurtBox" type="Area2D" parent="PlayerCharacter" groups=["player"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCharacter/HurtBox"]
 position = Vector2(0, 24)
@@ -53,9 +53,22 @@ debug_color = Color(0.686275, 0.290196, 1, 0.419608)
 [node name="Camera2D" type="Camera2D" parent="PlayerCharacter"]
 zoom = Vector2(2, 2)
 
-[node name="HealthComponent" parent="." instance=ExtResource("3_y0pbt")]
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="PlayerCharacter"]
+remote_path = NodePath("../../HealthBarComponent")
+update_rotation = false
+update_scale = false
+
+[node name="AttackDelay" type="Timer" parent="PlayerCharacter"]
+one_shot = true
 
 [node name="HealthBarComponent" parent="." node_paths=PackedStringArray("health_component", "entity_reference") instance=ExtResource("4_xxf6b")]
 health_component = NodePath("../HealthComponent")
 entity_reference = NodePath("../PlayerCharacter")
 y_offset = -100.0
+
+[node name="HealthComponent" parent="." instance=ExtResource("3_y0pbt")]
+current_health = 99.0
+
+[connection signal="area_entered" from="PlayerCharacter/AttackBox" to="PlayerCharacter" method="_on_attack_box_area_entered"]
+[connection signal="area_exited" from="PlayerCharacter/AttackBox" to="PlayerCharacter" method="_on_attack_box_area_exited"]
+[connection signal="timeout" from="PlayerCharacter/AttackDelay" to="PlayerCharacter" method="_on_attack_delay_timeout"]

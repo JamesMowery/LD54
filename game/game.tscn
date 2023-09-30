@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://b50dhbvg0elag"]
+[gd_scene load_steps=7 format=3 uid="uid://b50dhbvg0elag"]
 
 [ext_resource type="PackedScene" uid="uid://dlcyatddqr86r" path="res://land/land.tscn" id="1_yinrp"]
 [ext_resource type="PackedScene" uid="uid://bl4byvw0gaprk" path="res://pond/pond.tscn" id="2_1i6fn"]
 [ext_resource type="PackedScene" uid="uid://s2ov2behe70l" path="res://enemy/spawner/spawner.tscn" id="3_ta53g"]
 [ext_resource type="PackedScene" uid="uid://dq6acc0bcn36l" path="res://player/player.tscn" id="4_fc61c"]
+[ext_resource type="PackedScene" uid="uid://cnke1r63a4j8h" path="res://enemy/enemy_pan/enemy_pan.tscn" id="5_6t70b"]
 [ext_resource type="PackedScene" uid="uid://bw7mv4ty3t7xb" path="res://enemy/enemy_skinny/enemy_skinny.tscn" id="5_yscne"]
 
 [node name="Game" type="Node2D"]
@@ -12,23 +13,16 @@
 metadata/_edit_lock_ = true
 
 [node name="Pond" parent="." instance=ExtResource("2_1i6fn")]
-position = Vector2(616, 424)
-metadata/_edit_lock_ = true
-
-[node name="Spawner" parent="." instance=ExtResource("3_ta53g")]
-position = Vector2(208, 248)
+position = Vector2(704, 440)
 
 [node name="Player" parent="." instance=ExtResource("4_fc61c")]
-position = Vector2(232, 424)
+position = Vector2(72, 328)
+
+[node name="Spawner" parent="." instance=ExtResource("3_ta53g")]
+position = Vector2(224, 248)
+
+[node name="EnemyPan" parent="." instance=ExtResource("5_6t70b")]
+position = Vector2(120, 128)
 
 [node name="EnemySkinny" parent="." instance=ExtResource("5_yscne")]
-position = Vector2(352, 312)
-
-[node name="EnemySkinny2" parent="." instance=ExtResource("5_yscne")]
-position = Vector2(296, 536)
-
-[node name="EnemySkinny3" parent="." instance=ExtResource("5_yscne")]
-position = Vector2(624, 592)
-
-[node name="EnemySkinny4" parent="." instance=ExtResource("5_yscne")]
-position = Vector2(936, 296)
+position = Vector2(40, 192)
