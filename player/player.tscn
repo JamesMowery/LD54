@@ -1,0 +1,61 @@
+[gd_scene load_steps=8 format=3 uid="uid://dq6acc0bcn36l"]
+
+[ext_resource type="Script" path="res://player/player.gd" id="1_0553v"]
+[ext_resource type="Texture2D" uid="uid://7kw8lxfv2owb" path="res://icon.svg" id="1_rpf0v"]
+[ext_resource type="PackedScene" uid="uid://o7idubkhnsm0" path="res://components/health_component.tscn" id="3_y0pbt"]
+[ext_resource type="PackedScene" uid="uid://dfhpogj6okv0e" path="res://components/health_bar_component.tscn" id="4_xxf6b"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nsmsw"]
+size = Vector2(32, 152)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v5h30"]
+size = Vector2(32, 112)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kgbxg"]
+size = Vector2(32, 40)
+
+[node name="Player" type="Node2D" groups=["player"]]
+
+[node name="PlayerCharacter" type="CharacterBody2D" parent="." groups=["player"]]
+collision_layer = 4
+collision_mask = 18
+script = ExtResource("1_0553v")
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerCharacter"]
+self_modulate = Color(0, 0.6, 0.219608, 1)
+position = Vector2(0, 4)
+scale = Vector2(0.25, 1.1875)
+texture = ExtResource("1_rpf0v")
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerCharacter/Sprite2D"]
+self_modulate = Color(0.94902, 0, 1, 1)
+position = Vector2(-4.57764e-05, -47.2122)
+scale = Vector2(1, 0.264007)
+texture = ExtResource("1_rpf0v")
+
+[node name="PlayerCollision" type="CollisionShape2D" parent="PlayerCharacter"]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_nsmsw")
+
+[node name="HurtBox" type="Area2D" parent="PlayerCharacter"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCharacter/HurtBox"]
+position = Vector2(0, 24)
+shape = SubResource("RectangleShape2D_v5h30")
+
+[node name="AttackBox" type="Area2D" parent="PlayerCharacter"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCharacter/AttackBox"]
+position = Vector2(0, -52)
+shape = SubResource("RectangleShape2D_kgbxg")
+debug_color = Color(0.686275, 0.290196, 1, 0.419608)
+
+[node name="Camera2D" type="Camera2D" parent="PlayerCharacter"]
+zoom = Vector2(2, 2)
+
+[node name="HealthComponent" parent="." instance=ExtResource("3_y0pbt")]
+
+[node name="HealthBarComponent" parent="." node_paths=PackedStringArray("health_component", "entity_reference") instance=ExtResource("4_xxf6b")]
+health_component = NodePath("../HealthComponent")
+entity_reference = NodePath("../PlayerCharacter")
+y_offset = -100.0
