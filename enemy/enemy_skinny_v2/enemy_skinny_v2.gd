@@ -1,6 +1,8 @@
 extends EnemyBase2
 class_name EnemySkinny
 
+@onready var animation: AnimatedSprite2D = $AnimatedSprite2D
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super._ready()
@@ -11,3 +13,4 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
+

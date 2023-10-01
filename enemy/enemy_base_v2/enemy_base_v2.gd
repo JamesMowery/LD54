@@ -12,6 +12,7 @@ class_name EnemyBase2
 var _is_attacking: bool = false
 var _in_attack_area: bool = false
 var _current_target: GameManager.ENEMY_TARGET
+var _needs_rotation: bool = false
 
 func _ready() -> void:
 	SignalManager.on_enemy_entered_pond.connect(on_enemy_entered_pond)
@@ -24,9 +25,6 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	move_and_slide()
-
-func setup() -> void:
-	_ready()
 
 # Attacking
 ################################################################################

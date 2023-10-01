@@ -1,0 +1,126 @@
+[gd_scene load_steps=10 format=3 uid="uid://yahq565kmvax"]
+
+[ext_resource type="Script" path="res://enemy/pan/enemy_pan.gd" id="1_7juvk"]
+[ext_resource type="SpriteFrames" uid="uid://bbqivf8qgnihx" path="res://assets/enemies/enemy_pan_v2.tres" id="1_dvu3a"]
+[ext_resource type="PackedScene" uid="uid://dfhpogj6okv0e" path="res://components/health_bar_component.tscn" id="2_tay8h"]
+[ext_resource type="PackedScene" uid="uid://o7idubkhnsm0" path="res://components/health_component.tscn" id="3_ut6gt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u0n5h"]
+size = Vector2(40, 26)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8wqbu"]
+size = Vector2(14, 23)
+
+[sub_resource type="Animation" id="Animation_outa8"]
+resource_name = "pre_attack"
+length = 1.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0872665, -0.0872665, 0.0872665, 0.959931, 0.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_ty1h5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1syj7"]
+_data = {
+"RESET": SubResource("Animation_ty1h5"),
+"pre_attack": SubResource("Animation_outa8")
+}
+
+[node name="EnemyPan" type="Node2D"]
+
+[node name="EnemyBody" type="CharacterBody2D" parent="."]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_7juvk")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="EnemyBody"]
+sprite_frames = ExtResource("1_dvu3a")
+animation = &"attack"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBody"]
+position = Vector2(0, -12)
+shape = SubResource("RectangleShape2D_u0n5h")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="EnemyBody"]
+remote_path = NodePath("../../HealthBarComponent")
+update_rotation = false
+update_scale = false
+
+[node name="AttackArea" type="Area2D" parent="EnemyBody"]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBody/AttackArea"]
+position = Vector2(-13, 12.5)
+shape = SubResource("RectangleShape2D_8wqbu")
+
+[node name="PreAttackDelay" type="Timer" parent="EnemyBody"]
+one_shot = true
+
+[node name="AttackCooldown" type="Timer" parent="EnemyBody"]
+wait_time = 3.0
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EnemyBody"]
+libraries = {
+"": SubResource("AnimationLibrary_1syj7")
+}
+
+[node name="HealthBarComponent" parent="." node_paths=PackedStringArray("health_component", "entity_reference") instance=ExtResource("2_tay8h")]
+health_component = NodePath("../HealthComponent")
+entity_reference = NodePath("../EnemyBody")
+y_offset = -50.0
+
+[node name="HealthComponent" parent="." node_paths=PackedStringArray("entity") instance=ExtResource("3_ut6gt")]
+entity = NodePath("../EnemyBody")
+
+[connection signal="body_entered" from="EnemyBody/AttackArea" to="EnemyBody" method="_on_attack_area_body_entered"]
+[connection signal="body_exited" from="EnemyBody/AttackArea" to="EnemyBody" method="_on_attack_area_body_exited"]
+[connection signal="timeout" from="EnemyBody/PreAttackDelay" to="EnemyBody" method="_on_pre_attack_delay_timeout"]
+[connection signal="timeout" from="EnemyBody/AttackCooldown" to="EnemyBody" method="_on_attack_cooldown_timeout"]

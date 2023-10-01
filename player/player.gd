@@ -53,10 +53,13 @@ func get_input(delta):
 		velocity.y = 1 * _move_speed
 		rotation_degrees = 0
 	
-	if !_is_attacking and velocity.x != 0 or velocity.y != 0:
-		animated_sprite_2d.play("walk")
-	else:
-		animated_sprite_2d.play("idle")
+	if _is_attacking:
+		animated_sprite_2d.play("attack")
+	else:	
+		if !_is_attacking and velocity.x != 0 or velocity.y != 0:
+			animated_sprite_2d.play("walk")
+		else:
+			animated_sprite_2d.play("idle")
 	
 	# Factor In The Terrain Cost
 	var movement_cost = GameManager.check_terrain(_current_terrain)
@@ -86,7 +89,6 @@ func attack(enemy: Node2D) -> void:
 	_attack_ready = false
 	attack_box.hide()
 	_is_attacking = true
-	animated_sprite_2d.play("attack")
 	attack_delay.start()
 	SignalManager.on_damage_to_enemy.emit(enemy, _attack_damage)
 

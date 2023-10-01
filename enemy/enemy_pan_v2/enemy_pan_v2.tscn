@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://trkj8drhp1ga"]
+
+[ext_resource type="PackedScene" uid="uid://cugcuvckthrhs" path="res://enemy/enemy_base_v2/enemy_base_v2.tscn" id="1_642xx"]
+[ext_resource type="Script" path="res://enemy/enemy_pan_v2/enemy_pan_v2.gd" id="2_r4yar"]
+[ext_resource type="SpriteFrames" uid="uid://bbqivf8qgnihx" path="res://assets/enemies/enemy_pan_v2.tres" id="3_dko3i"]
+
+[node name="EnemyPanV2" instance=ExtResource("1_642xx")]
+
+[node name="EnemyBase" parent="." index="0"]
+script = ExtResource("2_r4yar")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="EnemyBase" index="7"]
+sprite_frames = ExtResource("3_dko3i")
+animation = &"attack"

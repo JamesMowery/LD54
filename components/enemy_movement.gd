@@ -42,9 +42,6 @@ func _physics_process(delta: float) -> void:
 		
 	if move_to_target:
 		move_towards_target(_target_position)
-	
-	#print_debug(_target_position)
-	#print_debug(_current_facing)
 
 # Movement
 ################################################################################
@@ -80,23 +77,34 @@ func face_to_target(current_facing: Vector2, target_pos: Vector2) -> Vector2:
 	if target_pos.x > 0 and absf(target_pos.x) > absf(target_pos.y):
 		return Vector2.RIGHT
 	
-	print_debug("Facing Error")
 	return current_facing
-	
+
 func update_rotation(current_facing: Vector2) -> void:
 	match current_facing:
 		Vector2.DOWN:
 			attack_box.rotation_degrees = 0
-			animation.play("walk_down")
+			if animation != null:
+				animation.play("walk_down")
+			else:
+				enemy.global_rotation_degrees = 0
 		Vector2.UP:
 			attack_box.rotation_degrees = 180
-			animation.play("walk_up")
+			if animation != null:
+				animation.play("walk_up")
+			else:
+				enemy.global_rotation_degrees = 180
 		Vector2.LEFT:
 			attack_box.rotation_degrees = 90
-			animation.play("walk_left")
+			if animation != null:
+				animation.play("walk_left")
+			else:
+				enemy.global_rotation_degrees = 90
 		Vector2.RIGHT:
 			attack_box.rotation_degrees = 270
-			animation.play("walk_right")
+			if animation != null:
+				animation.play("walk_right")
+			else:
+				enemy.global_rotation_degrees = 270
 
 # Positioning
 ################################################################################

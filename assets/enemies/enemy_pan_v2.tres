@@ -1,0 +1,59 @@
+[gd_resource type="SpriteFrames" load_steps=7 format=3 uid="uid://bbqivf8qgnihx"]
+
+[ext_resource type="Texture2D" uid="uid://das6l4hvml2c1" path="res://assets/enemies/human_pan.png" id="1_ftuhh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vmf70"]
+atlas = ExtResource("1_ftuhh")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lyf8u"]
+atlas = ExtResource("1_ftuhh")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_20ht8"]
+atlas = ExtResource("1_ftuhh")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wfq3o"]
+atlas = ExtResource("1_ftuhh")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_itqp6"]
+atlas = ExtResource("1_ftuhh")
+region = Rect2(128, 0, 64, 64)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vmf70")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lyf8u")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_20ht8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wfq3o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_20ht8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_itqp6")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
