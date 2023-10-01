@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=3 uid="uid://cugcuvckthrhs"]
+
+[ext_resource type="Script" path="res://enemy/enemy_base_v2/enemy_base_v2.gd" id="1_rekc2"]
+[ext_resource type="Script" path="res://components/health_component.gd" id="3_nksa7"]
+[ext_resource type="PackedScene" uid="uid://j1ebocnsxw0c" path="res://components/enemy_movement.tscn" id="4_0xk5m"]
+[ext_resource type="PackedScene" uid="uid://dfhpogj6okv0e" path="res://components/health_bar_component.tscn" id="4_ib301"]
+
+[node name="EnemyBaseV2" type="Node2D"]
+
+[node name="EnemyBase" type="CharacterBody2D" parent="." groups=["enemy"]]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_rekc2")
+
+[node name="EnemyCollision" type="CollisionShape2D" parent="EnemyBase"]
+
+[node name="HurtBox" type="Area2D" parent="EnemyBase" groups=["enemy"]]
+collision_layer = 8
+collision_mask = 2
+
+[node name="HurtBoxCollision" type="CollisionShape2D" parent="EnemyBase/HurtBox"]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="EnemyBase"]
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="EnemyBase"]
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="EnemyBase"]
+
+[node name="AttackTimeout" type="Timer" parent="EnemyBase"]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[node name="AttackBox" type="Area2D" parent="EnemyBase" groups=["enemy"]]
+collision_layer = 0
+collision_mask = 6
+
+[node name="AttackBoxCollision" type="CollisionShape2D" parent="EnemyBase/AttackBox"]
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("3_nksa7")
+
+[node name="HealthBarComponent" parent="." node_paths=PackedStringArray("health_component", "entity_reference") instance=ExtResource("4_ib301")]
+health_component = NodePath("../HealthComponent")
+entity_reference = NodePath("../EnemyBase")
+
+[node name="EnemyMovementComponent" parent="." node_paths=PackedStringArray("enemy") instance=ExtResource("4_0xk5m")]
+enemy = NodePath("../EnemyBase")
+
+[connection signal="area_entered" from="EnemyBase/HurtBox" to="EnemyBase" method="_on_hurt_box_area_entered"]
+[connection signal="screen_entered" from="EnemyBase/VisibleOnScreenNotifier2D" to="EnemyBase" method="_on_screen_entered"]
+[connection signal="screen_exited" from="EnemyBase/VisibleOnScreenNotifier2D" to="EnemyBase" method="_on_screen_exited"]
+[connection signal="timeout" from="EnemyBase/AttackTimeout" to="EnemyBase" method="_on_attack_timeout_timeout"]
+[connection signal="area_entered" from="EnemyBase/AttackBox" to="EnemyBase" method="_on_attack_box_area_entered"]
+[connection signal="area_exited" from="EnemyBase/AttackBox" to="EnemyBase" method="_on_attack_box_area_exited"]

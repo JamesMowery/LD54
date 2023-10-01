@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://dd8h5t0ttemf"]
+
+[ext_resource type="PackedScene" uid="uid://cugcuvckthrhs" path="res://enemy/enemy_base_v2/enemy_base_v2.tscn" id="1_f0w8f"]
+[ext_resource type="Script" path="res://enemy/enemy_skinny_v2/enemy_skinny_v2.gd" id="2_dn13b"]
+[ext_resource type="SpriteFrames" uid="uid://cdh7t8awamfpy" path="res://assets/enemies/enemy_pan.tres" id="3_marjr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pohdj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_atayc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fy65l"]
+size = Vector2(20, 16)
+
+[node name="EnemySkinnyV2" instance=ExtResource("1_f0w8f")]
+
+[node name="EnemyBase" parent="." index="0"]
+script = ExtResource("2_dn13b")
+
+[node name="EnemyCollision" parent="EnemyBase" index="0"]
+shape = SubResource("RectangleShape2D_pohdj")
+
+[node name="HurtBoxCollision" parent="EnemyBase/HurtBox" index="0"]
+shape = SubResource("RectangleShape2D_atayc")
+debug_color = Color(0, 0.65098, 0.109804, 0.419608)
+
+[node name="RemoteTransform2D" parent="EnemyBase" index="4"]
+remote_path = NodePath("../../HealthBarComponent")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="EnemyBase" index="5"]
+sprite_frames = ExtResource("3_marjr")
+animation = &"idle_down"
+
+[node name="AttackBoxCollision" parent="EnemyBase/AttackBox" index="0"]
+position = Vector2(0, 16)
+shape = SubResource("RectangleShape2D_fy65l")
+debug_color = Color(0.784314, 0, 0.247059, 0.419608)
+
+[node name="HealthComponent" parent="." index="1" node_paths=PackedStringArray("entity")]
+entity = NodePath("../EnemyBase")
+
+[node name="HealthBarComponent" parent="." index="2"]
+y_offset = -50.0
+
+[node name="EnemyMovementComponent" parent="." index="3" node_paths=PackedStringArray("animation")]
+animation = NodePath("../EnemyBase/AnimatedSprite2D")
+movement_speed = 50.0

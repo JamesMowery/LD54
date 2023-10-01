@@ -1,18 +1,71 @@
-[gd_scene load_steps=8 format=3 uid="uid://dq6acc0bcn36l"]
+[gd_scene load_steps=14 format=3 uid="uid://dq6acc0bcn36l"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_0553v"]
-[ext_resource type="Texture2D" uid="uid://7kw8lxfv2owb" path="res://icon.svg" id="1_rpf0v"]
+[ext_resource type="Texture2D" uid="uid://dprq1hm6kgc8p" path="res://assets/player/alligator.png" id="2_n1gv0"]
 [ext_resource type="PackedScene" uid="uid://o7idubkhnsm0" path="res://components/health_component.tscn" id="3_y0pbt"]
 [ext_resource type="PackedScene" uid="uid://dfhpogj6okv0e" path="res://components/health_bar_component.tscn" id="4_xxf6b"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_6xkep"]
+atlas = ExtResource("2_n1gv0")
+region = Rect2(192, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_35112"]
+atlas = ExtResource("2_n1gv0")
+region = Rect2(0, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fe5jt"]
+atlas = ExtResource("2_n1gv0")
+region = Rect2(0, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gnjro"]
+atlas = ExtResource("2_n1gv0")
+region = Rect2(64, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ym2il"]
+atlas = ExtResource("2_n1gv0")
+region = Rect2(128, 0, 64, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_npoag"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6xkep")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_35112")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fe5jt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gnjro")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ym2il")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nsmsw"]
-size = Vector2(32, 152)
+size = Vector2(48, 104)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v5h30"]
-size = Vector2(32, 112)
+size = Vector2(48, 104)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kgbxg"]
-size = Vector2(32, 40)
+size = Vector2(32, 24)
 
 [node name="Player" type="Node2D"]
 
@@ -21,32 +74,28 @@ collision_layer = 4
 collision_mask = 18
 script = ExtResource("1_0553v")
 
-[node name="Sprite2D" type="Sprite2D" parent="PlayerCharacter"]
-self_modulate = Color(0, 0.6, 0.219608, 1)
-position = Vector2(0, 4)
-scale = Vector2(0.25, 1.1875)
-texture = ExtResource("1_rpf0v")
-
-[node name="Sprite2D" type="Sprite2D" parent="PlayerCharacter/Sprite2D"]
-self_modulate = Color(0.94902, 0, 1, 1)
-position = Vector2(-4.57764e-05, -47.2122)
-scale = Vector2(1, 0.264007)
-texture = ExtResource("1_rpf0v")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="PlayerCharacter"]
+sprite_frames = SubResource("SpriteFrames_npoag")
+animation = &"attack"
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="PlayerCharacter"]
-position = Vector2(0, 4)
+position = Vector2(0, -12)
 shape = SubResource("RectangleShape2D_nsmsw")
 
 [node name="HurtBox" type="Area2D" parent="PlayerCharacter" groups=["player"]]
+collision_layer = 4
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCharacter/HurtBox"]
-position = Vector2(0, 24)
+position = Vector2(0, -12)
 shape = SubResource("RectangleShape2D_v5h30")
 
 [node name="AttackBox" type="Area2D" parent="PlayerCharacter"]
+collision_layer = 0
+collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCharacter/AttackBox"]
-position = Vector2(0, -52)
+position = Vector2(0, 52)
 shape = SubResource("RectangleShape2D_kgbxg")
 debug_color = Color(0.686275, 0.290196, 1, 0.419608)
 
@@ -59,6 +108,7 @@ update_rotation = false
 update_scale = false
 
 [node name="AttackDelay" type="Timer" parent="PlayerCharacter"]
+wait_time = 0.5
 one_shot = true
 
 [node name="HealthBarComponent" parent="." node_paths=PackedStringArray("health_component", "entity_reference") instance=ExtResource("4_xxf6b")]

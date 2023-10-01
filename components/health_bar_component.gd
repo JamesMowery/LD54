@@ -7,11 +7,9 @@ extends Sprite2D
 
 @onready var health_bar_label = $HealthBarLabel
 
-
 func _ready():
 	SignalManager.on_health_update.connect(on_health_update)
 	update_health()
-	# Get data from HealthComponent
 
 func _process(delta):
 	global_position.x = entity_reference.global_position.x + x_offset

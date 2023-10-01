@@ -32,8 +32,12 @@ entity_reference = NodePath(".")
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_wc1kb")]
 
+[node name="RegenTimer" type="Timer" parent="."]
+wait_time = 3.0
+
 [connection signal="area_entered" from="PondArea" to="PondArea" method="_on_area_entered"]
 [connection signal="area_exited" from="PondArea" to="PondArea" method="_on_area_exited"]
 [connection signal="body_entered" from="PondArea" to="PondArea" method="_on_body_entered"]
 [connection signal="body_exited" from="PondArea" to="PondArea" method="_on_body_exited"]
 [connection signal="timeout" from="PondArea/HealthRegenDropTimer" to="PondArea" method="_on_timer_timeout"]
+[connection signal="timeout" from="RegenTimer" to="PondArea" method="_on_regen_timer_timeout"]

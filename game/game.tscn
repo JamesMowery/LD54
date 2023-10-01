@@ -1,28 +1,35 @@
-[gd_scene load_steps=7 format=3 uid="uid://b50dhbvg0elag"]
+[gd_scene load_steps=8 format=3 uid="uid://b50dhbvg0elag"]
 
+[ext_resource type="Script" path="res://game/game.gd" id="1_m5xbk"]
 [ext_resource type="PackedScene" uid="uid://dlcyatddqr86r" path="res://land/land.tscn" id="1_yinrp"]
 [ext_resource type="PackedScene" uid="uid://bl4byvw0gaprk" path="res://pond/pond.tscn" id="2_1i6fn"]
 [ext_resource type="PackedScene" uid="uid://s2ov2behe70l" path="res://enemy/spawner/spawner.tscn" id="3_ta53g"]
 [ext_resource type="PackedScene" uid="uid://dq6acc0bcn36l" path="res://player/player.tscn" id="4_fc61c"]
-[ext_resource type="PackedScene" uid="uid://cnke1r63a4j8h" path="res://enemy/enemy_pan/enemy_pan.tscn" id="5_6t70b"]
-[ext_resource type="PackedScene" uid="uid://bw7mv4ty3t7xb" path="res://enemy/enemy_skinny/enemy_skinny.tscn" id="5_yscne"]
+[ext_resource type="PackedScene" uid="uid://dd8h5t0ttemf" path="res://enemy/enemy_skinny_v2/enemy_skinny_v2.tscn" id="5_jecby"]
+[ext_resource type="PackedScene" uid="uid://g7x87saihy4y" path="res://hud/hud.tscn" id="6_al6ri"]
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_m5xbk")
 
 [node name="Land" parent="." instance=ExtResource("1_yinrp")]
 metadata/_edit_lock_ = true
 
 [node name="Pond" parent="." instance=ExtResource("2_1i6fn")]
-position = Vector2(704, 440)
+position = Vector2(768, 448)
 
 [node name="Player" parent="." instance=ExtResource("4_fc61c")]
-position = Vector2(72, 328)
+position = Vector2(8, 184)
 
 [node name="Spawner" parent="." instance=ExtResource("3_ta53g")]
 position = Vector2(224, 248)
 
-[node name="EnemyPan" parent="." instance=ExtResource("5_6t70b")]
-position = Vector2(120, 128)
+[node name="EnemySkinnyV2" parent="." instance=ExtResource("5_jecby")]
+position = Vector2(88, 176)
 
-[node name="EnemySkinny" parent="." instance=ExtResource("5_yscne")]
-position = Vector2(40, 192)
+[node name="HUD" parent="." instance=ExtResource("6_al6ri")]
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
